@@ -36,6 +36,6 @@ const server = http.createServer((req, res) => {
   typeof handlerMethod[req.method] === 'function' && handlerMethod[req.method]();
 });
 
-server.listen(3000, () => {
+server.listen(process.env.PORT || 3000, () => {
   logger('Server created!');
 });
