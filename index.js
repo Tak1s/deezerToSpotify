@@ -1,41 +1,15 @@
-const http = require('http');
-const debug = require('debug');
-
+import express from 'express';
+import debug from 'debug';
+import cookieParser from 'cookie-parser';
+import router from './src/router';
 const logger = debug('DeezerToSpotify');
-const server = http.createServer((req, res) => {
-  const reqLogger = logger.extend('requestHandler');
-  const handlerMethod = {
-    POST: () => {
-      reqLogger('post');
-      const handlerUri = {
-        '/test': () => {
-          reqLogger('post');
-        }
-      };
-    },
-    GET: () => {
-      reqLogger.extend('get')(req.url);
-      const handlerUri = {
-        '/auth-callback': () => {
-          res.end('DeezerToSpotify auth callback');
-        }
-      };
-      typeof handlerUri[req.url] === 'function'
-        ? handlerUri[req.url]()
-        : res.end(`
-          <!doctype html>
-          <html>
-          <body>
-              DeezerToSpotify
-          </body>
-          </html>
-        `);
-    }
-  };
 
-  typeof handlerMethod[req.method] === 'function' && handlerMethod[req.method]();
-});
+const app = express();
 
-server.listen(process.env.PORT || 3000, () => {
+app.use(cookieParser());
+
+app.use('/', router);
+
+app.listen(process.env.PORT || 3000, () => {
   logger('Server created!');
 });

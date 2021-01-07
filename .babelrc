@@ -1,0 +1,45 @@
+{
+    "env": {
+      "cli": {
+        "presets": [
+          "@babel/env"
+        ]
+      },
+      "build": {
+        "presets": [
+          "@babel/preset-react",
+          [
+            "@babel/preset-env",
+            {
+              "modules": false,
+              "targets": {
+                "browsers": [
+                  "last 1 chrome version",
+                  "last 1 firefox version"
+                ]
+              }
+            }
+          ]
+        ],
+        "plugins": [
+          "lodash",
+          "emotion",
+          "react-hot-loader/babel",
+          "@babel/transform-proto-to-assign",
+          "@babel/plugin-proposal-class-properties",
+          [
+            "@babel/proposal-decorators",
+            {
+              "legacy": true
+            }
+          ],
+          [
+            "@babel/transform-classes",
+            {
+              "loose": true
+            }
+          ]
+        ]
+      }
+    }
+  }
