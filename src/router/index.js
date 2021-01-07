@@ -3,17 +3,8 @@ import { nanoid } from 'nanoid';
 import request from '../helpers/request';
 import { getServiceConfig } from '../helpers/db';
 
-const notFound = `
-          <!doctype html>
-          <html>
-          <body>
-              DeezerToSpotify 404
-          </body>
-          </html>
-        `;
-
 const YOUR_APP_ID = '455302';
-const YOUR_REDIRECT_URI = 'http://localhost:9696/auth-callback/deezer';
+const YOUR_REDIRECT_URI = 'http://localhost:3000/auth-callback/deezer';
 const SECRET_KEY = '024f6aa54ae4ffec031f2fe55bb5eabc';
 const authUrl = `https://connect.deezer.com/oauth/auth.php?app_id=${ YOUR_APP_ID }&redirect_uri=${ YOUR_REDIRECT_URI }&perms=basic_access&state=`;
 const tokenUrl = `https://connect.deezer.com/oauth/access_token.php?app_id=${ YOUR_APP_ID }&secret=${ SECRET_KEY }&output=json&code=`;
@@ -25,6 +16,7 @@ const router = express.Router();
 router.get('/auth/:serviceName', (req, res) => {
   // let uuid;
   // const cookies = new Cookies(req, res);
+  // req.params.serviceName
   let uuid = req.cookies['user_id'];
   if (!uuid) {
     uuid = nanoid();
@@ -71,20 +63,9 @@ router.get('/auth-callback/:serviceName', (req, res) => {
     code
   };
   res.cookie('user_id', state);
-  res.writeHead(302, { 'Location': 'http://localhost:3000/' });
+  res.writeHead(302, { 'Location': 'http://localhost:9696/' });
   res.end();
   // res.end(`DeezerToSpotify auth callback ${ code }`);
-});
-
-router.get('/term-of-use', (req, res) => {
-  res.end(`
-      <!doctype html>
-      <html>
-      <body>
-          DeezerToSpotify term of use
-      </body>
-      </html>
-    `);
 });
 
 export default router;
