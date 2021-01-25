@@ -1,20 +1,19 @@
 import React from 'react';
-// import { PropTypes } from 'prop-types';
-import Layer from './components/layer';
-import StreamService from './components/StreamService';
-import { deezer, spotify } from './constants';
+import Layout from './components/layouts/Layout/layout';
+import Sidebar from './components/layouts/Sidebar';
+import Content from './components/layouts/Content';
+import StreamServiceList from './components/StreamServiceList';
+import Service from './components/Service';
 
 const App = () => (
-  <Layer>
-    <StreamService
-      name={ deezer }
-      link="/auth/deezer"
-    />
-    <StreamService
-      name={ spotify }
-      link="/auth/spotify"
-    />
-  </Layer>
+  <Layout>
+    <Sidebar>
+      <StreamServiceList />
+    </Sidebar>
+    <Content>
+      <Service />
+    </Content>
+  </Layout>
 );
 
 export default App;

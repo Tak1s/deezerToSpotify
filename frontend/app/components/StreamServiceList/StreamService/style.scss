@@ -1,0 +1,49 @@
+.serviceWrapper {
+  position: relative;
+  font-size: 14px;
+  color: #000;
+  font-family: Roboto, sans-serif;
+  font-weight: bold;
+  z-index: 1;
+  cursor: pointer;
+
+  &:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    content: '';
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  &.deezer:after {
+    background: linear-gradient(50deg, rgba(245, 144, 3, 0) 15%, rgba(245, 144, 3, 1) 50%, rgba(199, 19, 84, 0.95) 65%, #212e94 85%, #3cad5c 95%);
+  }
+
+  &.spotify:after {
+    background: linear-gradient(50deg, rgba(27, 215, 96, 0) 15%, rgba(27, 215, 96, 0.808561) 40%, #1bd760 100%);
+  }
+
+  &.active:after,
+  &:hover:after {
+    opacity: 1;
+  }
+
+  span {
+    position: relative;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 3;
+  }
+}
+
+img.icon {
+  width: 34px;
+  margin: 0 10px;
+}

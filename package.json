@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "front:dev": "export BABEL_ENV=cli && node -r @babel/register ./node_modules/.bin/webpack-dev-server --host 0.0.0.0 --mode development --config webpack.config.js --progress --color",
-    "dev": "DEBUG=* nodemon -r esm index.js"
+    "dev": "DEBUG=* nodemon -r esm index.js",
+    "dev_2": "DEBUG=* nodemon -r esm ./src/helpers/db.js"
   },
   "keywords": [],
   "author": "",

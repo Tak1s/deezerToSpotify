@@ -1,17 +1,15 @@
-import { SET_COLLECTIONS } from './actionTypes';
-// TODO: mock for development
-import mock from '../mock';
+import { SET_TRACKS } from './actionTypes';
 
 const initState = {
-  collections: mock || []
+  collection: {}
 };
 
 export default function collectionsReducer(state = initState, action) {
   switch (action.type) {
-    case SET_COLLECTIONS:
+    case SET_TRACKS:
       return {
         ...state,
-        collections: action.payload
+        collection: action.payload
       };
     default:
       return state;

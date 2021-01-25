@@ -11,7 +11,8 @@ let aliases = {
   '~/common': path.resolve(__dirname, './frontend/common'),
   '~/helpers': path.resolve(__dirname, './frontend/common/helpers'),
   '~/requests': path.resolve(__dirname, './frontend/common/requests'),
-  '~/store': path.resolve(__dirname, './frontend/store')
+  '~/store': path.resolve(__dirname, './frontend/store'),
+  '~/static': path.resolve(__dirname, './frontend/static')
 };
 
 module.exports = {

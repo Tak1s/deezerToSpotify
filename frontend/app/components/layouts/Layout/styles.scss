@@ -10,16 +10,6 @@
 .wrapper {
   width: 100%;
   max-width: 1450px;
-}
-
-.panel {
-    margin: 10px;
-    padding: 10px;
-    background-color: #fff;
-}
-
-.panelGroup {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: row;
 }

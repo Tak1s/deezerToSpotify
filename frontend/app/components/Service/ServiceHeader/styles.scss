@@ -1,0 +1,42 @@
+.container {
+  position: relative;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: #2d2d2d;
+  background: linear-gradient(500deg, rgba(157, 157, 157, 0) 0%, rgba(157, 157, 157, 0.808561) 20%, #9d9d9d 100%);
+
+  &.deezer {
+    background: linear-gradient(50deg, rgba(245, 144, 3, 0) 0%, #f59003 40%, rgba(199, 19, 84, 0.95) 50%, #212e94 75%, #3cad5c 95%);
+  }
+
+  &.spotify {
+    background: linear-gradient(500deg, rgba(27, 215, 96, 0) 0%, rgba(27, 215, 96, 0.808561) 20%, #1bd760 100%);
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    height: 100%;
+    font-weight: 800;
+    font-size: 32px;
+  }
+
+  .loginLink {
+    text-decoration: none;
+    font-size: 26px;
+    margin: 10px;
+    color: #2d2d2d;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-bottom: 4px solid #2d2d2d;
+
+    &:hover {
+      color: #000;
+    }
+  }
+}

@@ -1,0 +1,2 @@
+export const SET_DEEZER_INFO = 'SET_DEEZER_INFO';
+export const SET_SPOTIFY_INFO = 'SET_SPOTIFY_INFO';

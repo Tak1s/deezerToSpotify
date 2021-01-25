@@ -1,71 +1,95 @@
 import express from 'express';
 import { nanoid } from 'nanoid';
-import request from '../helpers/request';
-import { getServiceConfig } from '../helpers/db';
-
-const YOUR_APP_ID = '455302';
-const YOUR_REDIRECT_URI = 'http://localhost:3000/auth-callback/deezer';
-const SECRET_KEY = '024f6aa54ae4ffec031f2fe55bb5eabc';
-const authUrl = `https://connect.deezer.com/oauth/auth.php?app_id=${ YOUR_APP_ID }&redirect_uri=${ YOUR_REDIRECT_URI }&perms=basic_access&state=`;
-const tokenUrl = `https://connect.deezer.com/oauth/access_token.php?app_id=${ YOUR_APP_ID }&secret=${ SECRET_KEY }&output=json&code=`;
-// const token = 'frOStaTtAGZU6Sj17VP5otU2RV5r4igBVQzqVMUFVWPuNdx0Yx7';
-const users = {}; // uuid: {id: , token: , code: }
+import { setUserToken } from '../helpers/db';
+import { checkServiceName } from '../helpers/validations';
+import {
+  getDeezerToken,
+  getDeezerAuthUrl,
+  getDeezerUserInfo,
+  getDeezerUserTracks
+} from '../deezer';
+import {
+  getSpotifyToken,
+  getSpotifyAuthUrl,
+  getSpotifyUserInfo,
+  getSpotifyUserTracks
+} from '../spotify';
 
 const router = express.Router();
 
-router.get('/auth/:serviceName', (req, res) => {
-  // let uuid;
-  // const cookies = new Cookies(req, res);
-  // req.params.serviceName
-  let uuid = req.cookies['user_id'];
-  if (!uuid) {
-    uuid = nanoid();
-    users[uuid] = {
-      id: uuid,
-      token: '',
-      code: ''
-    };
-    res.writeHead(302, { 'Location': authUrl + uuid });
+const getAuthUrl = {
+  deezer: getDeezerAuthUrl,
+  spotify: getSpotifyAuthUrl
+}
+
+const getToken = {
+  deezer: getDeezerToken,
+  spotify: getSpotifyToken
+};
+
+const getUserInfo = {
+  deezer: getDeezerUserInfo,
+  spotify: getSpotifyUserInfo
+}
+
+const getUserTracks = {
+  deezer: getDeezerUserTracks,
+  spotify: getSpotifyUserTracks
+}
+
+router.get('/auth/:serviceName', async (req, res) => {
+  const uuid = req.cookies['user_id'] || nanoid();
+  try {
+    const serviceName = checkServiceName(req.params.serviceName);
+    const authUrl = await getAuthUrl[serviceName](uuid);
+
+    res.writeHead(302, { Location: authUrl });
+  } catch(err) {
+    res.writeHead(302, { Location: req.headers.referer + '?error=500' });
+  } finally {
     res.end();
   }
-  request(tokenUrl + users[uuid].code).then((result) => {
-    users[uuid] = {
-      ...(users[uuid] || {}),
-      token: result.data.access_token,
-      expires: result.data.expires
-    };
-    // request(`https://api.deezer.com/user/me?access_token=${result.data.access_token}`).then((result) => {
-    //
-    //   res.end(JSON.stringify({ gg: 'test' }));
-    // }).catch(() => res.end(`Error get user=${ uuid }`));
-    res.writeHead(302, { 'Location': 'http://localhost:3000/user' });
+});
+
+router.get('/auth-callback/:serviceName', async (req, res) => {
+  const { code, state: uuid } = req.query;
+  try {
+    const serviceName = checkServiceName(req.params.serviceName);
+    const data = await getToken[serviceName](code);
+    await setUserToken(serviceName, uuid, data);
+
+    res.cookie('user_id', uuid);
+    res.writeHead(302, { 'Location': 'http://localhost:9696/' });
+  } catch (err) {
+    console.error(err);
+    res.writeHead(302, { 'Location': 'http://localhost:9696/?error=500' });
+  } finally {
     res.end();
-  }).catch((err) => {
-    res.end(`Error user_id=${ uuid }`);
-  });
+  }
 });
 
-router.get('/user', (req, res) => {
-  // let uuid;
-  // const cookies = new Cookies(req, res);
+router.get('/user/:serviceName', async (req, res) => {
   let uuid = req.cookies['user_id'];
-  request(`https://api.deezer.com/user/me?access_token=${ users[uuid].token }`).then((result) => {
+  try {
+    const serviceName = checkServiceName(req.params.serviceName);
+    const data = await getUserInfo[serviceName](serviceName, uuid);
 
-    res.end(JSON.stringify(result.data));
-  });
+    res.json(data);
+  } catch (err) {
+    res.json(err);
+  }
 });
 
-router.get('/auth-callback/:serviceName', (req, res) => {
-  const { code, state } = req.query;
-  // const cookies = new Cookies(req, res);
-  users[state] = {
-    ...(users[state] || {}),
-    code
-  };
-  res.cookie('user_id', state);
-  res.writeHead(302, { 'Location': 'http://localhost:9696/' });
-  res.end();
-  // res.end(`DeezerToSpotify auth callback ${ code }`);
+router.get('/user/:serviceName/treks/:userId', async (req, res) => {
+  let uuid = req.cookies['user_id'];
+  try {
+    const serviceName = checkServiceName(req.params.serviceName);
+    const data = await getUserTracks[serviceName](serviceName, uuid, req.params.userId);
+
+    res.json(data);
+  } catch (err) {
+    res.json(err);
+  }
 });
 
 export default router;

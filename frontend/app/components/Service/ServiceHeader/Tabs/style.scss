@@ -1,0 +1,18 @@
+.tabsContainer {
+  display: flex;
+  flex-direction: row;
+  font-size: 26px;
+  margin: 10px;
+
+  .tab {
+    padding: 0 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-bottom: 4px solid transparent;
+
+    &.activeTab {
+      border-bottom: 4px solid #2d2d2d;
+    }
+  }
+}
+
