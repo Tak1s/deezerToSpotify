@@ -1,5 +1,5 @@
-import request from './helpers/request';
 import url from 'url';
+import request from './helpers/request';
 import { getServiceConfig, getServiceTokenByUuid, removeUserToken } from './helpers/db';
 import { services } from '../config/constants';
 
@@ -96,4 +96,4 @@ export const getDeezerUserTracks = async (serviceName, uuid, userId) => {
   } catch (err) {
     throw err;
   }
-}
+};

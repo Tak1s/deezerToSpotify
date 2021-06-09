@@ -4,14 +4,13 @@ import {
   getTracks
 } from '~/requests';
 
-export const getServiceTracks = (service) => async (dispatch, getState) => {
-  const { id = null } = getState()[service];
+export const getServiceTracks = (service, id) => async (dispatch) => {
   const collections = await getTracks(service, id);
 
   if (Object.keys(collections).length) {
     dispatch({
       type: SET_TRACKS,
-      payload: collections
+      payload: { service, collections }
     });
   }
 };

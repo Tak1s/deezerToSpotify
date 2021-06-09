@@ -1,6 +1,71 @@
 .container {
-  position: fixed;
-  flex-direction: column;
+  position: relative;
   width: 100%;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+
+  .table {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+
+    .thead,
+    .tfoot {
+      display: flex;
+      flex-direction: column;
+      height: 30px;
+    }
+
+    .tbody {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: auto;
+      background:
+        linear-gradient(#ecebeb 30%, rgba(255, 255, 255, 0)),
+        linear-gradient(rgba(255, 255, 255, 0), #ecebeb 70%) 0 100%,
+        radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
+        radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+      background-repeat: no-repeat;
+      background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+      // Opera doesn't support this in the shorthand
+      background-attachment: local, local, scroll, scroll;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      max-height: 60px;
+
+      .col {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        justify-content: center;
+        align-items: flex-start;
+        color: #2d2d2d;
+        font-weight: bold;
+        padding: 5px 0 5px 10px;
+
+        &.emptyRow {
+          height: 60px;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  .img {
+    height: 56px;
+    width: 56px;
+  }
+
+  .albumsCover {
+    max-width: 60px;
+    padding-left: 0 !important;
+  }
 }

@@ -20,7 +20,7 @@ const router = express.Router();
 const getAuthUrl = {
   deezer: getDeezerAuthUrl,
   spotify: getSpotifyAuthUrl
-}
+};
 
 const getToken = {
   deezer: getDeezerToken,
@@ -30,12 +30,12 @@ const getToken = {
 const getUserInfo = {
   deezer: getDeezerUserInfo,
   spotify: getSpotifyUserInfo
-}
+};
 
 const getUserTracks = {
   deezer: getDeezerUserTracks,
   spotify: getSpotifyUserTracks
-}
+};
 
 router.get('/auth/:serviceName', async (req, res) => {
   const uuid = req.cookies['user_id'] || nanoid();
@@ -44,7 +44,7 @@ router.get('/auth/:serviceName', async (req, res) => {
     const authUrl = await getAuthUrl[serviceName](uuid);
 
     res.writeHead(302, { Location: authUrl });
-  } catch(err) {
+  } catch (err) {
     res.writeHead(302, { Location: req.headers.referer + '?error=500' });
   } finally {
     res.end();
@@ -80,7 +80,7 @@ router.get('/user/:serviceName', async (req, res) => {
   }
 });
 
-router.get('/user/:serviceName/treks/:userId', async (req, res) => {
+router.get('/user/:serviceName/tracks/:userId', async (req, res) => {
   let uuid = req.cookies['user_id'];
   try {
     const serviceName = checkServiceName(req.params.serviceName);

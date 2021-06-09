@@ -1,3 +1,3 @@
-import ServiceSettings from './ServiceSettings';
+import ServiceSetingsContainer from './ServiceSetingsContainer';
 
-export default ServiceSettings;
+export default ServiceSetingsContainer;

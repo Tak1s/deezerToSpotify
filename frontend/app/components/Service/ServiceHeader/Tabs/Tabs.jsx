@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import Tab from './Tab';
 import styles from './style.scss';
 import { TRACKS, SETTINGS } from '~/app/components/Service/constants';
@@ -23,9 +22,5 @@ const Tabs = () => {
     </div>
   );
 };
-
-// Tabs.propTypes = {
-//
-// };
 
 export default Tabs;

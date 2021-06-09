@@ -2,6 +2,7 @@ import express from 'express';
 import debug from 'debug';
 import cookieParser from 'cookie-parser';
 import router from './src/router';
+
 const logger = debug('DeezerToSpotify');
 
 const app = express();

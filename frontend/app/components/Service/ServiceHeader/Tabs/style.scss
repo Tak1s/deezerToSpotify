@@ -3,16 +3,23 @@
   flex-direction: row;
   font-size: 26px;
   margin: 10px;
+  color: #ebebeb;
 
   .tab {
     padding: 0 5px;
+    margin-left: 10px;
     cursor: pointer;
     text-transform: uppercase;
     border-bottom: 4px solid transparent;
+    transition: color 0.2s, border-bottom 0.2s;
+
+    &:hover {
+      color: #fff;
+    }
 
     &.activeTab {
-      border-bottom: 4px solid #2d2d2d;
+      color: #fff;
+      border-bottom: 4px solid #fff;
     }
   }
 }
-

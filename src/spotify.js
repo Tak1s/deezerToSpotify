@@ -1,14 +1,13 @@
-import axios from 'axios';
-import request from './helpers/request';
 import url from 'url';
+import request from './helpers/request';
 import { getServiceConfig, getServiceTokenByUuid, removeUserToken } from './helpers/db';
 import { services } from '../config/constants';
-import { getDeezerUserInfo } from './deezer';
 
 const YOUR_REDIRECT_URI = 'http://localhost:9696/auth-callback/spotify';
 const AUTH_URL = 'https://accounts.spotify.com/authorize';
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const USER_INFO_URL = 'https://api.spotify.com/v1/me';
+const USER_TRACKS_URL = 'https://api.spotify.com/v1/me/tracks';
 
 export const getSpotifyAuthUrl = async (uuid) => {
   try {
@@ -69,12 +68,12 @@ export const getSpotifyUserInfo = async (serviceName, uuid) => {
   }
 };
 
-const checkResponseData = (err, serviceName, uuid) => {
-  if (err.response.status && err.response.status === 401) {
+const checkResponseData = (res, serviceName, uuid) => {
+  if (res.response && res.response.status && res.response.status === 401) {
     removeUserToken(serviceName, uuid);
     return {};
   }
-  throw err;
+  return res;
 };
 
 /**
@@ -82,16 +81,22 @@ const checkResponseData = (err, serviceName, uuid) => {
  * @param uuid
  * @returns {Promise<never>|{}|*}
  */
-export const getSpotifyUserTracks = async (serviceName, uuid) => {
+export const getSpotifyUserTracks = async (serviceName, uuid, userId) => {
   try {
     const { access_token } = await getServiceTokenByUuid(serviceName, uuid);
-    const { id } = await getDeezerUserInfo(serviceName, uuid);
     if (access_token) {
-      const res = await request({ url: USER_TRACKS_URL(id), params: { access_token } });
+      const res = await request({
+        url: USER_TRACKS_URL,
+        options: {
+          headers: {
+            Authorization: `Bearer ${ access_token }`
+          }
+        }
+      });
       return checkResponseData(res, serviceName, uuid);
     }
     return Promise.reject({});
   } catch (err) {
     throw err;
   }
-}
+};

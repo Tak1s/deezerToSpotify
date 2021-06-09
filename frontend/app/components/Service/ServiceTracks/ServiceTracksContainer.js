@@ -6,7 +6,7 @@ import {
 
 const mapStateToProps = (state) => ({
   users: state.users,
-  tracks: state.tracks.collection
+  tracks: state.tracks
 });
 
 const mapDispatchToProps = {

@@ -1,7 +1,6 @@
 import { SET_TRACKS } from './actionTypes';
 
 const initState = {
-  collection: {}
 };
 
 export default function collectionsReducer(state = initState, action) {
@@ -9,7 +8,7 @@ export default function collectionsReducer(state = initState, action) {
     case SET_TRACKS:
       return {
         ...state,
-        collection: action.payload
+        [action.payload.service]: action.payload.collections
       };
     default:
       return state;

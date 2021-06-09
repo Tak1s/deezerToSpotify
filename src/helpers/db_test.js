@@ -18,12 +18,15 @@ export const getServiceConfig = async (rawServiceName) => {
     const serviceName = checkServiceName(rawServiceName);
     const service = await db.collection('stream_services').doc(serviceName).get();
 
-    return service.exists ? service.data() : {};
+    const gg = service.exists ? service.data() : {};
+    console.log('cvv');
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
+
+// getServiceConfig('deezer');
 
 /**
  * @param {String} rawServiceName
@@ -78,10 +81,25 @@ export const getServiceTokenByUuid = async (serviceName, uuid) => {
     return {};
   }
   try {
+    // const services = await db.collection('connections').listDocuments();
+    // const vv = services.find(({ id }) => id === uuid);
+    // // const vv = services.data();
+    // const bb = await vv.collection('services').listDocuments();
+    // const vvv = bb.find(({ id }) => id === serviceName);
+    // console.log(services.empty);
+    // // services.forEach((doc) => {
+    // // });
+    // if (!services.exists) {
+    //   return {};
+    // }
     const res = await db.collection('connections').doc(uuid).collection('services').doc(serviceName).get();
-    return res.exists ? res.data() : {};
+    const gg = res.exists ? res.data() : {};
+    return gg;
+    console.log(gg);
   } catch (err) {
     console.log(err);
     return null;
   }
 };
+
+getServiceTokenByUuid('deezer', 'R6aWwgsoi3npGeq81vw1N');

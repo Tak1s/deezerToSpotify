@@ -7,4 +7,4 @@ export const checkServiceName = (rawServiceName) => {
     throw new Error('Unknown service');
   }
   return serviceName;
-}
+};
